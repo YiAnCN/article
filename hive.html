@@ -1,0 +1,704 @@
+<!DOCTYPE html><html lang="zh-cn"><head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="williamszhang">
+<meta name="keywords" content="大数据,Java">
+
+<!-- open graph -->
+<meta property="og:type" content="website">
+<meta property="og:image" content="/article/6ed5faa0573b2a5a9d47232c9a71fb88.png">
+
+<link rel="shortcut icon" type="image/png" href="/article/6ed5faa0573b2a5a9d47232c9a71fb88.png">
+<link rel="sitemap" type="application/xml" href="/article/sitemap.xml">
+
+<link rel="preload" href="/article/3e1841f8083772ae601ba404f56701ce.ttf" as="font" crossorigin="anonymous">
+<link rel="preload" href="/article/8bbf08793ac42f6eb9cf6006657fa970.ttf" as="font" crossorigin="anonymous">
+
+  <style>
+  @font-face {
+    font-family: common_font;
+    src: url(/article/8bbf08793ac42f6eb9cf6006657fa970.ttf);
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    --primary-color: rgb(237, 106, 94);
+
+    --normal-color: #333;
+    --secondary-color: #888;
+    --tertiary-color: #ddd;
+    --backgroud: rgb(244, 244, 244);
+
+    --border-radius: 2px;
+    --transition-duration: 0.3s;
+
+    background-color: var(--backgroud);
+    transition: background-color var(--transition-duration);
+  }
+
+  body.dark-theme {
+    --normal-color: #eee;
+    --secondary-color: #888;
+    --tertiary-color: #444;
+    --backgroud: #333;
+  }
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const darkTheme = window.localStorage.getItem('dark_theme');
+    if (darkTheme) {
+      document.body.classList.remove('light-theme');
+      document.body.classList.add('dark-theme');
+    }
+  })
+</script>
+
+
+  <title>Hive 知识点总结 - Answer</title>
+
+  <link rel="preload" href="/article/a978d61c78ee184bd76bfcecf33b9682.ttf" as="font" crossorigin="anonymous">
+  <style>
+    @font-face {
+      font-family: article_font_hive;
+      src: url(/article/a978d61c78ee184bd76bfcecf33b9682.ttf);
+    }
+    article {
+      font-family: article_font_hive;
+    }
+  </style>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/firacode@5.2.0/distr/fira_code.min.css">
+  <link rel="stylesheet" href="/article/ece570de77ba673c17121d06fc929bd9.css">
+</head>
+
+<body class="light-theme">
+  <style>
+  @font-face {
+    font-family: title_font;
+    src: url(/article/3e1841f8083772ae601ba404f56701ce.ttf);
+  }
+
+  .page-header {
+    max-width: 840px;
+    margin: 40px auto;
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+  }
+
+  .page-header_title {
+    flex: 1;
+    min-width: 0;
+    font-size: 64px;
+    font-family: title_font;
+    margin: 0;
+  }
+
+  h1.page-header_title  {
+    color: var(--normal-color);
+  }
+
+  h2.page-header_title {
+    color: var(--primary-color);
+  }
+
+  .page-header_title > a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .theme-changer {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    border: none;
+  }
+
+  .page-header_icon {
+    display: block;
+    margin-left: 16px;
+    user-select: none;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+
+  .dark-theme .page-header_icon__light-theme {
+    display: none;
+  }
+
+  .light-theme .page-header_icon__dark-theme {
+    display: none;
+  }
+</style>
+
+<header class="page-header">
+  
+    <h2 class="page-header_title">
+      <a href="/article/">Answer</a>
+    </h2>
+  
+  <button class="theme-changer" type="button">
+    <img class="page-header_icon page-header_icon__dark-theme" src="/article/c81f837b51ca388c1a54c51c5d0c6b15.png" alt="light theme">
+    <img class="page-header_icon page-header_icon__light-theme" src="/article/802654de2a9a0f0d2667e6aed83d682f.png" alt="dark theme">
+  </button>
+  <a href="/article/rss.xml">
+    <img class="page-header_icon page-header_icon__dark-theme" src="/article/6594d1f64750503bee10571143bd5019.png" alt="rss">
+    <img class="page-header_icon page-header_icon__light-theme" src="/article/e31ad23031e5bcb34e8d4a424ba0c100.png" alt="rss">
+  </a>
+  <a href="https://github.com/YiAnCN/article">
+    <img class="page-header_icon page-header_icon__dark-theme" src="/article/8a0ad2aed00666d6d2366358a4e6e9ad.png" alt="github">
+    <img class="page-header_icon page-header_icon__light-theme" src="/article/184c800e11079b13904f308161071b62.png" alt="github">
+  </a>
+</header>
+
+<script>
+  (() => {
+    const themeChanger = document.querySelector('.theme-changer');
+    themeChanger.addEventListener('click', () => {
+      if (document.body.classList.contains('dark-theme')) {
+        document.body.classList.remove('dark-theme');
+        document.body.classList.add('light-theme');
+        window.localStorage.removeItem('dark_theme');
+      } else {
+        document.body.classList.remove('light-theme');
+        document.body.classList.add('dark-theme');
+        window.localStorage.setItem('dark_theme', '1');
+      }
+    });
+  })()
+</script>
+
+  <article>
+    <style>
+.article-header {
+  max-width: 840px;
+  margin: 40px auto;
+  padding: 0 30px;
+}
+
+.article-title {
+  color: var(--normal-color);
+  font-size: 32px;
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+}
+
+.article-title a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.article-create-time {
+  color: var(--secondary-color);
+  font-size: 14px;
+  font-family: common_font;
+}
+</style>
+
+<section class="article-header">
+  <h1 class="article-title">
+    <a href="/article/hive">Hive 知识点总结</a>
+  </h1>
+  <time class="article-create-time">2020-10-24</time>
+</section>
+
+    <style>
+  code {
+    font-family: 'Fira Code' !important;
+  }
+
+  article a {
+    color: var(--normal-color);
+    text-decoration-color: var(--primary-color);
+  }
+
+  article h2, article h3, article h4, article h5, article h6 {
+    max-width: 840px;
+    padding: 0 30px;
+    margin: 0 auto;
+    line-height: 1.5;
+    color: var(--normal-color);
+  }
+
+  article h2 {
+    margin-top: 28px;
+    font-size: 28px;
+  }
+
+  article h3 {
+    margin-top: 26px;
+    font-size: 25px;
+  }
+
+  article h4 {
+    margin-top: 24px;
+    font-size: 22px;
+  }
+
+  article h5 {
+    margin-top: 22px;
+    font-size: 19px;
+  }
+
+  article h6 {
+    margin-top: 20px;
+    font-size: 16px;
+  }
+
+  article p {
+    max-width: 840px;
+    padding: 0 30px;
+    font-size: 16px;
+    margin: 15px auto;
+    line-height: 1.8;
+    color: var(--normal-color);
+  }
+
+  article p code {
+    padding: 0 4px;
+    border-radius: var(--border-radius);
+    background: rgba(237, 106, 94, 0.3);
+  }
+
+  article pre {
+    max-width: 840px !important;
+    margin: 15px auto !important;
+    font-size: 14px !important;
+    box-sizing: border-box;
+    border-radius: var(--border-radius) !important;
+    tab-size: 2 !important;
+    padding: 0 !important;
+  }
+
+  article pre code {
+    display: block;
+    margin: 20px 30px !important;
+    overflow: auto !important;
+    font-size: inherit !important;
+  }
+
+  article hr {
+    max-width: 840px;
+    margin: 40px auto;
+    border-color: var(--tertiary-color);
+  }
+
+  article blockquote {
+    max-width: 840px;
+    padding: 0 30px;
+    margin: 15px auto;
+    position: relative;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--secondary-color);
+  }
+
+  .table-container {
+    max-width: 840px;
+    padding: 0 30px;
+    margin: 15px auto;
+  }
+
+  .table-container table {
+    border-collapse: collapse;
+  }
+
+  .table-container td {
+    font-size: 14px;
+    color: var(--normal-color);
+    border: 1px solid var(--tertiary-color);
+    padding: 10px;
+  }
+
+  article blockquote::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 30px;
+    width: 3px;
+    height: 100%;
+    background-color: var(--primary-color);
+  }
+
+  article blockquote p {
+    font-size: 14px;
+    color: inherit;
+    max-width: unset;
+    padding: 0;
+    margin: 0 0 0 30px;
+  }
+
+  article ul,
+  article ol {
+    max-width: 840px;
+    padding: 0 30px;
+    margin: 15px auto;
+    color: var(--normal-color);
+    line-height: 1.5;
+  }
+  
+  article ul li, article ol li {
+    display: block;
+    margin: 5px 0;
+    position: relative;
+  }
+
+  article ul li::before, article ol li::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: calc(50% - 2px);
+    left: -15px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: var(--normal-color);
+  }
+
+  article figcaption {
+    font-size: 12px;
+    color: var(--secondary-color);
+    text-align: center;
+    margin-top: 5px;
+  }
+
+  .figure-img {
+    max-width: 840px;
+    padding: 0 30px;
+    margin: 15px auto;
+  }
+
+  .figure-img img {
+    display: block;
+    max-width: 100%;
+    margin: 0 auto;
+    border-radius: var(--border-radius);
+  }
+
+  .figure-iframe {
+    width: 100%;
+    margin: 15px 0;
+  }
+
+  .figure-iframe iframe {
+    display: block;
+    width: 100%;
+    max-width: 840px;
+    margin: 0 auto;
+    height: 640px;
+    border: none;
+    border-radius: var(--border-radius);
+  }
+</style>
+
+<section>
+  <h2 id="hive">什么是 Hive</h2>
+<p>hive 的本质是将 HQL 转化为 MapReduce 程序，hive 处理的数据存储在 HDFS 上，hive 分析数据的底层实现是 MapReduce，hive 会将 HQL 代码提交到 Yarn 上执行。</p>
+<p>hive的元数据信息存储在远程的 mysql 数据库中，元数据包括：表名、表所属的数据库（默认是 default）、表的拥有者、列/分区字段、表的类型（是否是外部表）、表的数据所在目录等； </p>
+<h2 id="hive-1">Hive 的内部表、外部表、分区表、分桶表</h2>
+<h4 id="hive-2">什么是 hive 的内部表：</h4>
+<p>每一张 Table 在 hive 中都有一个相对应的目录存储数据，所有的 Table 数据（不包括 External table ）都保存在这个目录中，删除表时，元数据和表数据都会被删除。</p>
+<pre><code class="sql language-sql">create table emp (
+empid int, 
+ename string,  
+deptno int 
+)row format delimited fields terminated by ',';
+</code></pre>
+<h4 id="">将数据导入内部表：</h4>
+<ul>
+<li>标准insert语句，用于从textfile类型临时表导数到orc压缩格式的表中</li>
+</ul>
+<pre><code class="sql language-sql">  insert into emp values(列值,列值,列值)
+</code></pre>
+<ul>
+<li>load 语句：
+导入 HDFS 的数据：</li>
+</ul>
+<pre><code class="sql language-sql">  load data inpath '/scott/emp.csv' into table emp;
+</code></pre>
+<p>导入本地数据文件，多一个 local 关键字：</p>
+<pre><code class="sql language-sql">  load data local inpath '/root/temp/emp.csv' into table emp;
+</code></pre>
+<p>覆盖数据，overwrite 关键字：</p>
+<pre><code class="sql language-sql">  load data inpath '/scott/emp.csv' overwrite into table emp;
+</code></pre>
+<p>加载数据到分区，partition 指定分区：</p>
+<pre><code class="sql language-sql">  load data local inpath '/opt/module/hive/datas/dept_20200401.log' into table dept_partition partition(day='20200401');
+</code></pre>
+<h4 id="hive-3">什么是 hive 的外部表</h4>
+<p>外部表只是表与外部数据做一个链接，链接指明数据存在HDFS的什么地方，数据不存储在表所对应的目录下。当删除一个外部表时，仅删除该链接和元数据，不删除外部数据。</p>
+<p>external 关键字可以让用户创建一个外部表，location 关键字指向实际路径</p>
+<pre><code class="sql language-sql">create external table emp (
+empid int, 
+ename string,  
+deptno int 
+)row format delimited fields terminated by ',';
+location '/emp';
+</code></pre>
+<h4 id="-1">外部表和内部表的互换：</h4>
+<ul>
+<li>修改内部表 student 为外部表</li>
+</ul>
+<pre><code class="sql language-sql">  alter table student set tblproperties('EXTERNAL'='TRUE');  
+</code></pre>
+<ul>
+<li>修改外部表 student 为内部表</li>
+</ul>
+<pre><code class="sql language-sql">  alter table student set tblproperties('EXTERNAL'='FALSE');  
+</code></pre>
+<h4 id="hive-4">什么是 hive 的分区表：</h4>
+<p>在 Hive 中，表中的一个 partition 对应表下的一个目录，所有的 partition 数据都存储在对应的目录中。</p>
+<p>partitioned by 创建分区表 :</p>
+<pre><code class="sql language-sql">create table emp_part (
+empno int,
+ename string, 
+job string,
+mgr int, 
+hiredate string, 
+sal int, comm int 
+)partitioned by (deptno int) 
+row format delimited fields terminated by ',';
+</code></pre>
+<p>通过 explain 语句，可以查看 SQL 的执行计划。从而可以判断建立分区后，是否可以提高查询到的效率：</p>
+<pre><code class="sql language-sql">explain select * from emp where deptno = 10;
+</code></pre>
+<p>往分区表中插入数据：指明分区：</p>
+<pre><code class="sql language-sql">insert into table emp_part partition(deptno=10) select empno,ename,job,mgr,hiredate,sal,comm from emp1 where deptno=10;
+insert into table emp_part partition(deptno=20) select empno,ename,job,mgr,hiredate,sal,comm from emp1 where deptno=20;
+insert into table emp_part partition(deptno=30) select empno,ename,job,mgr,hiredate,sal,comm from emp1 where deptno=30;
+</code></pre>
+<p>创建二级分区表：</p>
+<pre><code class="sql language-sql"> create table dept_partition2(
+ deptno int, 
+ dname string, 
+ loc string
+ )partitioned by (day string, hour string)
+ row format delimited fields terminated by '\t'; 
+</code></pre>
+<h4 id="hive-5">什么是 hive 的分桶表？</h4>
+<p>桶表是对数据进行哈希取值，然后放到不同文件中存储</p>
+<p>clustered by 创建分桶表</p>
+<pre><code class="sql language-sql">create table emp_bucket 
+(empno int, 
+ename string, 
+job string, 
+mgr int, 
+hiredate string, 
+sal int, 
+comm int, 
+deptno int 
+)clustered by (job) into 4 buckets 
+row format delimited fields terminated by ',';
+</code></pre>
+<h4 id="storedashive">STORED AS 为 hive 表指定存储文件类型</h4>
+<p>常用的存储文件类型：SEQUENCEFILE（二进制序列文件）、TEXTFILE（文本）、ORC（列</p>
+<p>式存储格式文件）。如果文件数据是纯文本，可以使用STORED AS TEXTFILE。如果数据需要压缩，使用 STORED </p>
+<p>AS ORC</p>
+<h2 id="-2">表的常用操作</h2>
+<p>1.重命名表：</p>
+<pre><code class="sql language-sql">ALTER TABLE table_name RENAME TO new_table_name; 
+</code></pre>
+<p>2.添加列：</p>
+<pre><code class="sql language-sql"> alter table tableName add columns (deptdesc string);  
+</code></pre>
+<p>3.更新列：</p>
+<pre><code class="sql language-sql"> alter table tableName change column column_name new_name string;  
+</code></pre>
+<p>4.增加分区：</p>
+<pre><code class="sql language-sql">alter table dept_partition add partition(day='20200404');  
+alter table dept_partition add partition(day='20200405') partition(day='20200406');  
+</code></pre>
+<p>5.删除分区：</p>
+<pre><code class="sql language-sql">alter table dept_partition drop partition (day='20200406'); 
+alter table dept_partition drop partition (day='20200404'), partition(day='20200405'); 
+</code></pre>
+<p>6.查看分区表有多少个分区：</p>
+<pre><code class="sql language-sql">show partitions dept_partition;  
+</code></pre>
+<h2 id="hive-6">Hive 常用交互命令</h2>
+<p>1.“-e" 不进入hive的交互窗口就能执行 SQL 语句</p>
+<pre><code class="shell language-shell">$ bin/hive -e "select id from student;" 
+</code></pre>
+<p>2.“-f”执行脚本中 sql 语句 </p>
+<pre><code class="shell language-shell">（1）在/opt/module/hive/下创建 datas 目录并在 datas 目录下创建 hivef.sql 文件 
+[atguigu@hadoop102 datas]$ touch hivef.sql  
+
+（2）文件中写入正确的 sql 语句
+ select *from student;  
+
+（3）执行文件中的 sql 语句
+[atguigu@hadoop102 hive]$ bin/hive -f /opt/module/hive/datas/hivef.sql  
+
+（4）执行文件中的 sql 语句并将结果写入文件中
+ [atguigu@hadoop102 hive]$ bin/hive -f /opt/module/hive/datas/hivef.sql  &amp;gt; /opt/module/datas/hive_result.txt 
+</code></pre>
+<h2 id="udf">UDF 函数</h2>
+<p>自定义UDF需要继承UDF类： org.apache.hadoop.hive.ql.UDF，并且重写 evaluate 方法。</p>
+<pre><code class="sql language-sql">import org.apache.hadoop.hive.ql.exec.UDF;
+
+public class MyConcatString extends UDF{
+    public String evaluate(String a,String b){ 
+        return a + "*************"+b; 
+    }
+}
+</code></pre>
+<pre><code class="sql language-sql">import org.apache.hadoop.hive.ql.exec.UDF;
+
+public class CheckSalaryGrade extends UDF{
+    public String evaluate(String salary){ 
+        int sal = Integer.parseInt(salary);
+        if(sal&amp;lt;1000) return "Grade A"; 
+        else if(sal&amp;gt;=1000 &amp;amp;&amp;amp; sal&amp;lt;3000) return "Grade B"; 
+        else return "Grade C";
+    }
+}
+</code></pre>
+<h2 id="-3">工作中遇到的问题记录</h2>
+<h4 id="etl_time8">ETL_TIME 时差差8小时:</h4>
+<pre><code class="sql language-sql">date_format(from_utc_timestamp(current_timestamp(), 'PRC'), 'yyyy-MM-dd HH:mm:ss')
+
+select date_format(from_utc_timestamp(current_timestamp(), 'PRC'), 'yyyy-MM-dd HH:mm:ss') as etl_time
+</code></pre>
+<h4 id="hive-7">HIVE 里创建临时表产出大量的小文件：</h4>
+<p>里创建临时表，默认是事务表，事务表的小文件会很大。所以需要将事务表删除重建改成非事务表</p>
+<p>下面加了这两行就是事务表：</p>
+<p>'transactional'='true', 'transactional_properties'='default',</p>
+<pre><code class="sql language-sql">CREATE TABLE `dw.tmp_12_gxt`(
+    `sp_id` string,
+    `avg_xscb` double,
+    `ys_btcb` double)
+PARTITIONED BY (
+  `data_date` string)
+ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.orc.OrcSerde'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.orc.OrcInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat'
+LOCATION
+  'hdfs://5star-hdfs/warehouse/tablespace/managed/hive/dw.db/tmp_12_gxt'
+TBLPROPERTIES (
+  'bucketing_version'='2',
+  'transactional'='true',
+  'transactional_properties'='default',
+  'transient_lastDdlTime'='1617936342')
+</code></pre>
+<p>去掉这两行就是非事务表：</p>
+<pre><code class="sql language-sql">CREATE TABLE `dw.tmp_12_gxt`(
+    `sp_id` string,
+    `avg_xscb` double,
+    `ys_btcb` double)
+PARTITIONED BY (
+  `data_date` string)
+ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.orc.OrcSerde'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.orc.OrcInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat'
+LOCATION
+  'hdfs://5star-hdfs/warehouse/tablespace/managed/hive/dw.db/tmp_12_gxt'
+TBLPROPERTIES (
+  'bucketing_version'='2',
+  'transient_lastDdlTime'='1617936342')
+</code></pre>
+<p>所以我们创建临时表的时候可以指定 tblproperties ('transactional' = 'false')：</p>
+<pre><code class="sql language-sql">create table dwd.t_coupon_use tblproperties ('transactional' = 'false')
+  as
+    select * from dw.tmp_12_gxt
+</code></pre>
+<h4 id="jsonget_json_objectstringjson_stringstringpath">解析json：get<em>json</em>object(string json_string,string path)</h4>
+<pre><code class="json language-json">data =
+{
+ "store":
+        {
+         "fruit":[{"weight":8,"type":"apple"}, {"weight":9,"type":"pear"}],  
+         "bicycle":{"price":19.95,"color":"red"}
+         }, 
+ "email":"amy@only_for_json_udf_test.net", 
+ "owner":"amy" 
+}
+</code></pre>
+<ul>
+<li>get单层值</li>
+</ul>
+<pre><code class="sql language-sql">  hive&amp;gt; select  get_json_object(data, '$.owner') from test;
+  结果：amy
+</code></pre>
+<ul>
+<li>get多层值</li>
+</ul>
+<pre><code class="sql language-sql">  hive&amp;gt; select  get_json_object(data, '$.store.bicycle.price') from test;
+  结果：19.95
+</code></pre>
+<ul>
+<li>get数组值</li>
+</ul>
+<pre><code class="sql language-sql">  hive&amp;gt; select  get_json_object(data, '$.store.fruit[0]') from test;
+  结果：{"weight":8,"type":"apple"}
+</code></pre>
+</section>
+
+    
+  </article>
+  
+<style>
+  .article-action {
+    max-width: 840px;
+    margin: 40px auto;
+    padding: 0 30px;
+    font-family: common_font;
+    color: var(--normal-color);
+  }
+  .article-action > a {
+    color: inherit;
+    text-decoration-color: var(--primary-color);
+  }
+</style>
+
+<p class="article-action">
+  本文使用
+  <a href="https://github.com/YiAnCN/article/issues">Issues</a>
+  讨论或直接在
+  <a href="https://github.com/YiAnCN/article/edit/master/articles/hive/index.md">Github</a>
+  编辑.
+</p>
+
+  <style>
+.page-footer{
+  font-size: 12px;
+  max-width: 840px;
+  margin: 40px auto;
+  padding: 0 30px;
+  font-family: common_font;
+  color: var(--secondary-color);
+}
+
+.page-footer > a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.page-footer > a:hover {
+  color: var(--primary-color);
+}
+</style>
+
+<footer class="page-footer">
+  <a href="https://github.com/YiAnCN/article/blob/master/LICENSE">©</a> 2022
+  <a href="http://williamszhang.top">WILLIAMSZHANG</a>
+</footer>
+
+
+  <script src="/article/39c97c2884c3a2b5e64c8f085b843d4e.js"></script>
+
+
+
+</body></html>

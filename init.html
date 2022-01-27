@@ -1,0 +1,477 @@
+<!DOCTYPE html><html lang="zh-cn"><head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="williamszhang">
+<meta name="keywords" content="大数据,Java">
+
+<!-- open graph -->
+<meta property="og:type" content="website">
+<meta property="og:image" content="/article/6ed5faa0573b2a5a9d47232c9a71fb88.png">
+
+<link rel="shortcut icon" type="image/png" href="/article/6ed5faa0573b2a5a9d47232c9a71fb88.png">
+<link rel="sitemap" type="application/xml" href="/article/sitemap.xml">
+
+<link rel="preload" href="/article/3e1841f8083772ae601ba404f56701ce.ttf" as="font" crossorigin="anonymous">
+<link rel="preload" href="/article/8bbf08793ac42f6eb9cf6006657fa970.ttf" as="font" crossorigin="anonymous">
+
+  <style>
+  @font-face {
+    font-family: common_font;
+    src: url(/article/8bbf08793ac42f6eb9cf6006657fa970.ttf);
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    --primary-color: rgb(237, 106, 94);
+
+    --normal-color: #333;
+    --secondary-color: #888;
+    --tertiary-color: #ddd;
+    --backgroud: rgb(244, 244, 244);
+
+    --border-radius: 2px;
+    --transition-duration: 0.3s;
+
+    background-color: var(--backgroud);
+    transition: background-color var(--transition-duration);
+  }
+
+  body.dark-theme {
+    --normal-color: #eee;
+    --secondary-color: #888;
+    --tertiary-color: #444;
+    --backgroud: #333;
+  }
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const darkTheme = window.localStorage.getItem('dark_theme');
+    if (darkTheme) {
+      document.body.classList.remove('light-theme');
+      document.body.classList.add('dark-theme');
+    }
+  })
+</script>
+
+
+  <title>init - Answer</title>
+
+  <link rel="preload" href="/article/e37066818477b479eb5899830c3fc982.ttf" as="font" crossorigin="anonymous">
+  <style>
+    @font-face {
+      font-family: article_font_init;
+      src: url(/article/e37066818477b479eb5899830c3fc982.ttf);
+    }
+    article {
+      font-family: article_font_init;
+    }
+  </style>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/firacode@5.2.0/distr/fira_code.min.css">
+  <link rel="stylesheet" href="/article/ece570de77ba673c17121d06fc929bd9.css">
+</head>
+
+<body class="light-theme">
+  <style>
+  @font-face {
+    font-family: title_font;
+    src: url(/article/3e1841f8083772ae601ba404f56701ce.ttf);
+  }
+
+  .page-header {
+    max-width: 840px;
+    margin: 40px auto;
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+  }
+
+  .page-header_title {
+    flex: 1;
+    min-width: 0;
+    font-size: 64px;
+    font-family: title_font;
+    margin: 0;
+  }
+
+  h1.page-header_title  {
+    color: var(--normal-color);
+  }
+
+  h2.page-header_title {
+    color: var(--primary-color);
+  }
+
+  .page-header_title > a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .theme-changer {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    border: none;
+  }
+
+  .page-header_icon {
+    display: block;
+    margin-left: 16px;
+    user-select: none;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+
+  .dark-theme .page-header_icon__light-theme {
+    display: none;
+  }
+
+  .light-theme .page-header_icon__dark-theme {
+    display: none;
+  }
+</style>
+
+<header class="page-header">
+  
+    <h2 class="page-header_title">
+      <a href="/article/">Answer</a>
+    </h2>
+  
+  <button class="theme-changer" type="button">
+    <img class="page-header_icon page-header_icon__dark-theme" src="/article/c81f837b51ca388c1a54c51c5d0c6b15.png" alt="light theme">
+    <img class="page-header_icon page-header_icon__light-theme" src="/article/802654de2a9a0f0d2667e6aed83d682f.png" alt="dark theme">
+  </button>
+  <a href="/article/rss.xml">
+    <img class="page-header_icon page-header_icon__dark-theme" src="/article/6594d1f64750503bee10571143bd5019.png" alt="rss">
+    <img class="page-header_icon page-header_icon__light-theme" src="/article/e31ad23031e5bcb34e8d4a424ba0c100.png" alt="rss">
+  </a>
+  <a href="https://github.com/YiAnCN/article">
+    <img class="page-header_icon page-header_icon__dark-theme" src="/article/8a0ad2aed00666d6d2366358a4e6e9ad.png" alt="github">
+    <img class="page-header_icon page-header_icon__light-theme" src="/article/184c800e11079b13904f308161071b62.png" alt="github">
+  </a>
+</header>
+
+<script>
+  (() => {
+    const themeChanger = document.querySelector('.theme-changer');
+    themeChanger.addEventListener('click', () => {
+      if (document.body.classList.contains('dark-theme')) {
+        document.body.classList.remove('dark-theme');
+        document.body.classList.add('light-theme');
+        window.localStorage.removeItem('dark_theme');
+      } else {
+        document.body.classList.remove('light-theme');
+        document.body.classList.add('dark-theme');
+        window.localStorage.setItem('dark_theme', '1');
+      }
+    });
+  })()
+</script>
+
+  <article>
+    <style>
+.article-header {
+  max-width: 840px;
+  margin: 40px auto;
+  padding: 0 30px;
+}
+
+.article-title {
+  color: var(--normal-color);
+  font-size: 32px;
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+}
+
+.article-title a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.article-create-time {
+  color: var(--secondary-color);
+  font-size: 14px;
+  font-family: common_font;
+}
+</style>
+
+<section class="article-header">
+  <h1 class="article-title">
+    <a href="/article/init">init</a>
+  </h1>
+  <time class="article-create-time">2020-10-24</time>
+</section>
+
+    <style>
+  code {
+    font-family: 'Fira Code' !important;
+  }
+
+  article a {
+    color: var(--normal-color);
+    text-decoration-color: var(--primary-color);
+  }
+
+  article h2, article h3, article h4, article h5, article h6 {
+    max-width: 840px;
+    padding: 0 30px;
+    margin: 0 auto;
+    line-height: 1.5;
+    color: var(--normal-color);
+  }
+
+  article h2 {
+    margin-top: 28px;
+    font-size: 28px;
+  }
+
+  article h3 {
+    margin-top: 26px;
+    font-size: 25px;
+  }
+
+  article h4 {
+    margin-top: 24px;
+    font-size: 22px;
+  }
+
+  article h5 {
+    margin-top: 22px;
+    font-size: 19px;
+  }
+
+  article h6 {
+    margin-top: 20px;
+    font-size: 16px;
+  }
+
+  article p {
+    max-width: 840px;
+    padding: 0 30px;
+    font-size: 16px;
+    margin: 15px auto;
+    line-height: 1.8;
+    color: var(--normal-color);
+  }
+
+  article p code {
+    padding: 0 4px;
+    border-radius: var(--border-radius);
+    background: rgba(237, 106, 94, 0.3);
+  }
+
+  article pre {
+    max-width: 840px !important;
+    margin: 15px auto !important;
+    font-size: 14px !important;
+    box-sizing: border-box;
+    border-radius: var(--border-radius) !important;
+    tab-size: 2 !important;
+    padding: 0 !important;
+  }
+
+  article pre code {
+    display: block;
+    margin: 20px 30px !important;
+    overflow: auto !important;
+    font-size: inherit !important;
+  }
+
+  article hr {
+    max-width: 840px;
+    margin: 40px auto;
+    border-color: var(--tertiary-color);
+  }
+
+  article blockquote {
+    max-width: 840px;
+    padding: 0 30px;
+    margin: 15px auto;
+    position: relative;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--secondary-color);
+  }
+
+  .table-container {
+    max-width: 840px;
+    padding: 0 30px;
+    margin: 15px auto;
+  }
+
+  .table-container table {
+    border-collapse: collapse;
+  }
+
+  .table-container td {
+    font-size: 14px;
+    color: var(--normal-color);
+    border: 1px solid var(--tertiary-color);
+    padding: 10px;
+  }
+
+  article blockquote::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 30px;
+    width: 3px;
+    height: 100%;
+    background-color: var(--primary-color);
+  }
+
+  article blockquote p {
+    font-size: 14px;
+    color: inherit;
+    max-width: unset;
+    padding: 0;
+    margin: 0 0 0 30px;
+  }
+
+  article ul,
+  article ol {
+    max-width: 840px;
+    padding: 0 30px;
+    margin: 15px auto;
+    color: var(--normal-color);
+    line-height: 1.5;
+  }
+  
+  article ul li, article ol li {
+    display: block;
+    margin: 5px 0;
+    position: relative;
+  }
+
+  article ul li::before, article ol li::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: calc(50% - 2px);
+    left: -15px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: var(--normal-color);
+  }
+
+  article figcaption {
+    font-size: 12px;
+    color: var(--secondary-color);
+    text-align: center;
+    margin-top: 5px;
+  }
+
+  .figure-img {
+    max-width: 840px;
+    padding: 0 30px;
+    margin: 15px auto;
+  }
+
+  .figure-img img {
+    display: block;
+    max-width: 100%;
+    margin: 0 auto;
+    border-radius: var(--border-radius);
+  }
+
+  .figure-iframe {
+    width: 100%;
+    margin: 15px 0;
+  }
+
+  .figure-iframe iframe {
+    display: block;
+    width: 100%;
+    max-width: 840px;
+    margin: 0 auto;
+    height: 640px;
+    border: none;
+    border-radius: var(--border-radius);
+  }
+</style>
+
+<section>
+  <h2 id="848471">上线步骤（假设今天是8月4日，上线时间是8月4日，用户需要的是7月1日之后的数据）：</h2>
+<h4 id="">初始化数据：</h4>
+<p>ODS层：</p>
+<p>1.ODS项目下找到 ods<em>trade</em>pcp<em>brand</em>sale_daily 工作流，点击下线，然后进行修改，初始化7月1日到8月3日的数据，将原来的${system.biz.curdate} 改为如图所示；</p>
+
+      <figure class="figure-img">
+        <a href="D:\工作脚本汇总\交接文档\picture\c3b32e3fc771b49790159310613a5db.png" target="_blank">
+          <img src="D:\工作脚本汇总\交接文档\picture\c3b32e3fc771b49790159310613a5db.png" alt="c3b32e3fc771b49790159310613a5db" title="c3b32e3fc771b49790159310613a5db" loading="lazy">
+        </a>
+        <figcaption>c3b32e3fc771b49790159310613a5db</figcaption>
+      </figure>
+    
+<p>2.ODS项目下找到 ods<em>trade</em>wms<em>out</em>of<em>warehouse</em>daily 工作流，点击下线，然后进行修改，初始化7月1日到8月3日的数据，将原来的${system.biz.curdate} 改为如上图所示；</p>
+<p>3.上面两个修改完成后都要点保存，然后上线启动工作流。当两个任务都跑完之后，下线改回原来的样子，重新上线并配置定时</p>
+<p>至此数据初始化结束，7月1日到8月3日的历史数据有了，8月4日的数据将在8月5日凌晨跑数入表</p>
+<p>dw层：</p>
+<p>1.找到 dwa<em>trade</em>pcp<em>brand</em>sale_daily 任务，启动工作流</p>
+<p>2.找到 dmp<em>trade</em>pcp<em>brand</em>sale_daily 任务，启动工作流，推送给pcp</p>
+</section>
+
+    
+  </article>
+  
+<style>
+  .article-action {
+    max-width: 840px;
+    margin: 40px auto;
+    padding: 0 30px;
+    font-family: common_font;
+    color: var(--normal-color);
+  }
+  .article-action > a {
+    color: inherit;
+    text-decoration-color: var(--primary-color);
+  }
+</style>
+
+<p class="article-action">
+  本文使用
+  <a href="https://github.com/YiAnCN/article/issues">Issues</a>
+  讨论或直接在
+  <a href="https://github.com/YiAnCN/article/edit/master/articles/init/index.md">Github</a>
+  编辑.
+</p>
+
+  <style>
+.page-footer{
+  font-size: 12px;
+  max-width: 840px;
+  margin: 40px auto;
+  padding: 0 30px;
+  font-family: common_font;
+  color: var(--secondary-color);
+}
+
+.page-footer > a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.page-footer > a:hover {
+  color: var(--primary-color);
+}
+</style>
+
+<footer class="page-footer">
+  <a href="https://github.com/YiAnCN/article/blob/master/LICENSE">©</a> 2022
+  <a href="http://williamszhang.top">WILLIAMSZHANG</a>
+</footer>
+
+
+  <script src="/article/39c97c2884c3a2b5e64c8f085b843d4e.js"></script>
+
+
+
+</body></html>

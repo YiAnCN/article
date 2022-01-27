@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/"
+  xmlns:atom="http://www.w3.org/2005/Atom"
+  version="2.0"
+>
+  <channel>
+    <title>
+      <![CDATA[Answer]]>
+    </title>
+    <description>
+      <![CDATA[WilliamsZhang&#39;s Writing]]>
+    </description>
+    <link>https://williamszhang.github.io/article</link>
+    <lastBuildDate>2022-01-27T09:17:10.654Z</lastBuildDate>
+    
+      <item>
+        <title>
+          <![CDATA[Hive 知识点总结]]>
+        </title>
+        <link>https://williamszhang.github.io/article/hive</link>
+        <guid isPermaLink="false">hive</guid>
+        <pubDate>2020-10-24T00:00:00.000Z</pubDate>
+      </item>
+    
+      <item>
+        <title>
+          <![CDATA[init]]>
+        </title>
+        <link>https://williamszhang.github.io/article/init</link>
+        <guid isPermaLink="false">init</guid>
+        <pubDate>2020-10-24T00:00:00.000Z</pubDate>
+      </item>
+    
+      <item>
+        <title>
+          <![CDATA[存储过程和游标]]>
+        </title>
+        <link>https://williamszhang.github.io/article/stored_procedure</link>
+        <guid isPermaLink="false">stored_procedure</guid>
+        <pubDate>2020-10-24T00:00:00.000Z</pubDate>
+      </item>
+    
+      <item>
+        <title>
+          <![CDATA[CSS 变量]]>
+        </title>
+        <link>https://williamszhang.github.io/article/css_variable</link>
+        <guid isPermaLink="false">css_variable</guid>
+        <pubDate>2019-10-23T00:00:00.000Z</pubDate>
+      </item>
+    
+      <item>
+        <title>
+          <![CDATA[如何处理 RESTFUL 数据异常导致的前端错误]]>
+        </title>
+        <link>https://williamszhang.github.io/article/handle_restful_api_error</link>
+        <guid isPermaLink="false">handle_restful_api_error</guid>
+        <pubDate>2019-05-30T00:00:00.000Z</pubDate>
+      </item>
+    
+  </channel>
+</rss>
